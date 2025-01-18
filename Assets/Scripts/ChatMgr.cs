@@ -11,6 +11,8 @@ public class ChatMgr : MonoBehaviour
     public Button screenshotBtn;
 
     public ScrollRect messageSR;
+    public RectTransform sendBg;
+    public Button msgBarBtn;
     public Transform SendContent;
     public GameObject TopicPrefab;
     public GameObject OtherDialoguePrefab;
@@ -21,6 +23,8 @@ public class ChatMgr : MonoBehaviour
 
     private LevelData currentLevel;
     private int remainingDeleteCount;
+
+    private bool isSendMsgShow = true;
 
     private List<Rect> placedTopicRects = new List<Rect>(); // 记录已放置的主题位置
 
@@ -33,6 +37,7 @@ public class ChatMgr : MonoBehaviour
         Instance = this;
         screenshotBtn.onClick.AddListener(OnScreenshot);
         restartBtn.onClick.AddListener(RestartLevel);
+        msgBarBtn.onClick.AddListener(OnMsgBarBtn);
     }
 
     void Start()
@@ -51,7 +56,8 @@ public class ChatMgr : MonoBehaviour
 
         remainingDeleteCountText.text = remainingDeleteCount.ToString();
         targetText.text = currentLevel.description;
-        InitTopics(currentLevel.topicIds);
+        // InitTopics(currentLevel.topicIds);
+        InitTopicsR(currentLevel.topicIds);
     }
 
     public void InitTopics(List<string> topicIds)
@@ -122,6 +128,52 @@ public class ChatMgr : MonoBehaviour
         }
     }
 
+    public void InitTopicsR(List<string> topicIds)
+    {
+        RectTransform contentRect = SendContent.GetComponent<RectTransform>();
+        placedTopicRects.Clear();
+
+        // 计算圆的半径（取内容区域宽高的较小值的一半的80%作为半径）
+        float radius = Mathf.Min(contentRect.rect.width, contentRect.rect.height) * 0.4f;
+
+        // 获取主题预制件的尺寸
+        GameObject tempTopic = Instantiate(TopicPrefab, SendContent);
+        RectTransform tempRect = tempTopic.GetComponent<RectTransform>();
+        float topicWidth = tempRect.rect.width;
+        float topicHeight = tempRect.rect.height;
+        Destroy(tempTopic);
+
+        // 计算主题之间的角度间隔
+        float angleStep = 360f / topicIds.Count;
+
+        for (int i = 0; i < topicIds.Count; i++)
+        {
+            GameObject topicObj = Instantiate(TopicPrefab, SendContent);
+            RectTransform topicRect = topicObj.GetComponent<RectTransform>();
+            topicObj.GetComponent<TopicEntity>().Init(LevelMgr.GetTopic(topicIds[i]));
+
+            // 计算当前主题的角度
+            float angle = i * angleStep;
+
+            // 将角度转换为弧度
+            float radian = angle * Mathf.Deg2Rad;
+
+            // 计算位置
+            float xPos = radius * Mathf.Cos(radian);
+            float yPos = radius * Mathf.Sin(radian);
+
+            topicRect.localPosition = new Vector2(xPos, yPos);
+
+            // 记录放置位置
+            placedTopicRects.Add(new Rect(
+                xPos - topicWidth / 2,
+                yPos - topicHeight / 2,
+                topicWidth,
+                topicHeight
+            ));
+        }
+    }
+
     private bool IsRectOverlapping(float x1, float y1, float w1, float h1,
                                  float x2, float y2, float w2, float h2,
                                  float minSpacing)
@@ -148,10 +200,20 @@ public class ChatMgr : MonoBehaviour
     }
 
     /// <summary>
+    /// 滑动条置底
+    /// </summary>
+    public void ScrollToBottom()
+    {
+        Canvas.ForceUpdateCanvases();
+        messageSR.verticalNormalizedPosition = 0f;
+    }
+
+    /// <summary>
     /// 选择话题
     /// </summary>
     public void SelectTopic(string topicId)
     {
+        OnMsgBarBtn();
         StartCoroutine(SendTopic(topicId));
     }
 
@@ -161,9 +223,7 @@ public class ChatMgr : MonoBehaviour
         GameObject dialogueObj = Instantiate(dialogueData.isSelf ? SelfDialoguePrefab : OtherDialoguePrefab, messageSR.content);
         dialogueObj.GetComponent<DialogueEntity>().Init(dialogueData);
 
-        // 滑动条置底
-        Canvas.ForceUpdateCanvases();
-        messageSR.verticalNormalizedPosition = 0f;
+        ScrollToBottom();
     }
 
     /// <summary>
@@ -234,17 +294,7 @@ public class ChatMgr : MonoBehaviour
         {
             DialogueEntity dialogue = child.GetComponent<DialogueEntity>();
             dialogueIds.Add(dialogue.dialogueId);
-#if UNITY_EDITOR
-            Debug.Log("对话顺序: " + dialogue.dialogueId);
-#endif
         }
-
-#if UNITY_EDITOR
-        for (int i = 0; i < dialogueIds.Count; i++)
-        {
-            Debug.Log("对话顺序: " + dialogueIds[i] + "|" + currentLevel.correctOrder[i]);
-        }
-#endif
 
         // 首先检查长度是否相同
         if (dialogueIds.Count != currentLevel.correctOrder.Count)
@@ -286,6 +336,23 @@ public class ChatMgr : MonoBehaviour
     public void OnScreenshot()
     {
         ValidateOrder();
+    }
+
+    public void OnMsgBarBtn()
+    {
+        RectTransform msgRT = messageSR.GetComponent<RectTransform>();
+        if (isSendMsgShow)
+        {
+            sendBg.anchoredPosition = new Vector2(sendBg.anchoredPosition.x, sendBg.anchoredPosition.y - 392f);
+            msgRT.sizeDelta = new Vector2(msgRT.sizeDelta.x, msgRT.sizeDelta.y + 392f);
+        }
+        else
+        {
+            sendBg.anchoredPosition = new Vector2(sendBg.anchoredPosition.x, sendBg.anchoredPosition.y + 392f);
+            msgRT.sizeDelta = new Vector2(msgRT.sizeDelta.x, msgRT.sizeDelta.y - 392f);
+        }
+        ScrollToBottom();
+        isSendMsgShow = !isSendMsgShow;
     }
 
 }
