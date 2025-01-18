@@ -160,6 +160,8 @@ public class ChatMgr : MonoBehaviour
         GameObject dialogueObj = Instantiate(dialogueData.isSelf ? SelfDialoguePrefab : OtherDialoguePrefab, messageSR.content);
         dialogueObj.GetComponent<DialogueEntity>().Init(dialogueData);
 
+        GameMgr.Instance.PlaySound("WordSFX");
+
         ScrollToBottom();
     }
 
@@ -168,13 +170,16 @@ public class ChatMgr : MonoBehaviour
     /// </summary>
     public IEnumerator SendTopic(string topicId)
     {
+        GameMgr.Instance.PlaySound("TopicSFX");
+
         TopicData topicData = LevelMgr.GetTopic(topicId);
         DisableBtn();
 
+        yield return new WaitForSeconds(0.907f);
         foreach (var dialogueId in topicData.dialogueIds)
         {
             SendDialogue(dialogueId);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.6f);
         }
 
         EnableBtn();
@@ -216,6 +221,7 @@ public class ChatMgr : MonoBehaviour
 
     public void NextLevel()
     {
+        GameMgr.Instance.PlaySound("ButtonSFX");
         int next = int.Parse(currentLevel.id) + 1;
         if (next >= LevelMgr.levels.Count)
         {
@@ -226,6 +232,7 @@ public class ChatMgr : MonoBehaviour
 
     public void RestartLevel()
     {
+        GameMgr.Instance.PlaySound("ButtonSFX");
         InitChat(LevelMgr.GetLevel(int.Parse(currentLevel.id)));
     }
 
@@ -252,6 +259,7 @@ public class ChatMgr : MonoBehaviour
             shareResults.sprite = failedSprite;
             shareResults.SetNativeSize();
             nextLevelBtn.gameObject.SetActive(false);
+            GameMgr.Instance.PlaySound("LoseSFX");
             return;
         }
 
@@ -275,6 +283,7 @@ public class ChatMgr : MonoBehaviour
             shareResults.sprite = successSprite;
             shareResults.SetNativeSize();
             nextLevelBtn.gameObject.SetActive(true);
+            GameMgr.Instance.PlaySound("WinSFX");
         }
         else
         {
@@ -282,18 +291,25 @@ public class ChatMgr : MonoBehaviour
             shareResults.sprite = failedSprite;
             shareResults.SetNativeSize();
             nextLevelBtn.gameObject.SetActive(false);
+            GameMgr.Instance.PlaySound("LoseSFX");
         }
     }
 
-    // 返回到主菜单
-    public void BackToMenu()
-    {
-        // 返回到主菜单
-    }
-
+    /// <summary>
+    /// 截图
+    /// </summary>
     public void OnScreenshot()
     {
+        StartCoroutine(ScreenshotCoroutine());
+    }
+
+    public IEnumerator ScreenshotCoroutine()
+    {
+        DisableBtn();
+        GameMgr.Instance.PlaySound("ShotScreen");
+        yield return new WaitForSeconds(0.705f);
         ValidateOrder();
+        EnableBtn();
     }
 
     public void OnMsgBarBtn()

@@ -15,6 +15,7 @@ public class StartGame : MonoBehaviour
         playBtn.onClick.AddListener(OnPlayGame);
         Utils.InitGame = true;
         // SceneManager.LoadScene("MainScene");
+        GameMgr.Instance.PlayMusic(Resources.Load<AudioClip>("Audios/BGM"));
     }
 
     // Update is called once per frame
@@ -25,6 +26,7 @@ public class StartGame : MonoBehaviour
 
     public void OnPlayGame()
     {
+        GameMgr.Instance.PlaySound("ButtonSFX");
         SceneManager.LoadScene("MainScene");
     }
 }

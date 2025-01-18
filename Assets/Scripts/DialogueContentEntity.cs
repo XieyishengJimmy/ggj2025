@@ -13,8 +13,6 @@ public class DialogueContentEntity : MonoBehaviour
     // private bool isLoop = false;
     private Image image;
 
-    public AudioClip bubbleSound;
-
     public IEnumerator PlayAnimationCoroutine()
     {
         if (image == null)
@@ -22,19 +20,10 @@ public class DialogueContentEntity : MonoBehaviour
             image = GetComponent<Image>();
         }
 
-        // 如果音效为空，尝试从Resources加载
-        if (bubbleSound == null)
-        {
-            // bubbleSound = Resources.Load<AudioClip>("Sounds/Bubble");
-        }
-
         if (sprites != null && sprites.Length > 1)
         {
             // 播放音效
-            if (bubbleSound != null)
-            {
-                GameMgr.Instance.PlaySound(bubbleSound);
-            }
+            GameMgr.Instance.PlaySound("BubbleExploreSFX");
 
             //while (true)
             //{

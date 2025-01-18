@@ -16,6 +16,8 @@ public class GameMgr : MonoSingleton<GameMgr>
     [Range(0, 1)]
     public float soundVolume = 1f; // 音效音量
 
+    public Dictionary<string, AudioClip> sounds = new Dictionary<string, AudioClip>();
+
     public void Initialize()
     {
         // 清空现有数据
@@ -71,12 +73,38 @@ public class GameMgr : MonoSingleton<GameMgr>
         musicSource.Play();
     }
 
+    public void PlayMusic(string name)
+    {
+        if (sounds.ContainsKey(name))
+        {
+            PlayMusic(sounds[name]);
+        }
+        else
+        {
+            sounds[name] = Resources.Load<AudioClip>("Audios/" + name);
+            PlayMusic(sounds[name]);
+        }
+    }
+
     // 播放音效
     public void PlaySound(AudioClip sound)
     {
         if (sound == null || soundSource == null) return;
 
         soundSource.PlayOneShot(sound, soundVolume);
+    }
+
+    public void PlaySound(string name)
+    {
+        if (sounds.ContainsKey(name))
+        {
+            PlaySound(sounds[name]);
+        }
+        else
+        {
+            sounds[name] = Resources.Load<AudioClip>("Audios/" + name);
+            PlaySound(sounds[name]);
+        }
     }
 
     // 更新音量
