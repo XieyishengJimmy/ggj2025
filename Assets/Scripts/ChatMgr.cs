@@ -18,7 +18,10 @@ public class ChatMgr : MonoBehaviour
     public GameObject TopicPrefab;
     public GameObject OtherDialoguePrefab;
     public GameObject SelfDialoguePrefab;
+
+    public Image shareResults;
     public Text remainingDeleteCountText;
+    public Button nextLevelBtn;
     public Button restartBtn;
     public Text targetText;
 
@@ -37,6 +40,7 @@ public class ChatMgr : MonoBehaviour
         }
         Instance = this;
         screenshotBtn.onClick.AddListener(OnScreenshot);
+        nextLevelBtn.onClick.AddListener(NextLevel);
         restartBtn.onClick.AddListener(RestartLevel);
         msgBarBtn.onClick.AddListener(OnMsgBarBtn);
     }
@@ -52,6 +56,10 @@ public class ChatMgr : MonoBehaviour
         currentLevel = level;
         remainingDeleteCount = currentLevel.deleteCount;
         nicknameText.text = currentLevel.otherName;
+
+        shareResults.gameObject.SetActive(false);
+        nextLevelBtn.gameObject.SetActive(false);
+
         if (!string.IsNullOrEmpty(currentLevel.avatarPath))
         {
             avatar.sprite = Resources.Load<Sprite>("Arts/" + currentLevel.avatarPath);
@@ -234,7 +242,11 @@ public class ChatMgr : MonoBehaviour
 #if UNITY_EDITOR
             Debug.Log("对话数量不足");
 #endif
-            GameMgr.Instance.LoseGame();
+            shareResults.gameObject.SetActive(true);
+            Sprite failedSprite = Resources.Load<Sprite>("Images/ShareFailed");
+            shareResults.sprite = failedSprite;
+            shareResults.SetNativeSize();
+            nextLevelBtn.gameObject.SetActive(false);
             return;
         }
 
@@ -250,15 +262,21 @@ public class ChatMgr : MonoBehaviour
             }
         }
 
+        shareResults.gameObject.SetActive(true);
+
         if (isCorrect)
         {
-            GameMgr.Instance.WinGame();
-            NextLevel();
+            Sprite successSprite = Resources.Load<Sprite>("Images/ShareSuccess");
+            shareResults.sprite = successSprite;
+            shareResults.SetNativeSize();
+            nextLevelBtn.gameObject.SetActive(true);
         }
         else
         {
-            GameMgr.Instance.LoseGame();
-            RestartLevel();
+            Sprite failedSprite = Resources.Load<Sprite>("Images/ShareFailed");
+            shareResults.sprite = failedSprite;
+            shareResults.SetNativeSize();
+            nextLevelBtn.gameObject.SetActive(false);
         }
     }
 
