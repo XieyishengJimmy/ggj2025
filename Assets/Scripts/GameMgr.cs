@@ -6,9 +6,15 @@ public class GameMgr : MonoSingleton<GameMgr>
 {
     // 当前关卡ID
     public int currentLevelId;
-
     // 对话框最大宽度
     public float dialogueMaxWidth = 360f;
+    [Header("音频设置")]
+    public AudioSource musicSource; // 背景音乐播放器
+    public AudioSource soundSource; // 音效播放器
+    [Range(0, 1)]
+    public float musicVolume = 1f; // 音乐音量
+    [Range(0, 1)]
+    public float soundVolume = 1f; // 音效音量
 
     public void Initialize()
     {
@@ -40,30 +46,53 @@ public class GameMgr : MonoSingleton<GameMgr>
         }
 
         currentLevelId = 1;
+
+        // 初始化音频
+        if (musicSource == null)
+            musicSource = gameObject.AddComponent<AudioSource>();
+        if (soundSource == null)
+            soundSource = gameObject.AddComponent<AudioSource>();
+
+        // 设置音频源属性
+        musicSource.loop = true;
+        soundSource.loop = false;
+
+        UpdateVolume();
+
+
     }
 
-    public void WinGame()
+    // 播放背景音乐
+    public void PlayMusic(AudioClip music)
     {
-        // 胜利 下一关
-#if UNITY_EDITOR
-        Debug.Log("WinGame");
-#endif
+        if (music == null || musicSource == null) return;
+
+        musicSource.clip = music;
+        musicSource.Play();
     }
 
-    public void LoseGame()
+    // 播放音效
+    public void PlaySound(AudioClip sound)
     {
-        // 失败 重新开始
-#if UNITY_EDITOR
-        Debug.Log("LoseGame");
-#endif
+        if (sound == null || soundSource == null) return;
+
+        soundSource.PlayOneShot(sound, soundVolume);
     }
 
-    public void EndGame()
+    // 更新音量
+    public void UpdateVolume()
     {
-        // 结束游戏
-#if UNITY_EDITOR
-        Debug.Log("EndGame");
-#endif
+        if (musicSource != null)
+            musicSource.volume = musicVolume;
+        if (soundSource != null)
+            soundSource.volume = soundVolume;
+    }
+
+    // 停止音乐
+    public void StopMusic()
+    {
+        if (musicSource != null)
+            musicSource.Stop();
     }
 
 }
