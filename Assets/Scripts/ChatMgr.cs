@@ -216,7 +216,12 @@ public class ChatMgr : MonoBehaviour
 
     public void NextLevel()
     {
-        InitChat(LevelMgr.GetLevel(int.Parse(currentLevel.id) + 1));
+        int next = int.Parse(currentLevel.id) + 1;
+        if (next >= LevelMgr.levels.Count)
+        {
+            return;
+        }
+        InitChat(LevelMgr.GetLevel(next));
     }
 
     public void RestartLevel()
