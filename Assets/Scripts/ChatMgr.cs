@@ -160,8 +160,6 @@ public class ChatMgr : MonoBehaviour
         GameObject dialogueObj = Instantiate(dialogueData.isSelf ? SelfDialoguePrefab : OtherDialoguePrefab, messageSR.content);
         dialogueObj.GetComponent<DialogueEntity>().Init(dialogueData);
 
-        GameMgr.Instance.PlaySound("WordSFX");
-
         ScrollToBottom();
     }
 
@@ -175,10 +173,14 @@ public class ChatMgr : MonoBehaviour
         TopicData topicData = LevelMgr.GetTopic(topicId);
         DisableBtn();
 
-        yield return new WaitForSeconds(0.907f);
-        foreach (var dialogueId in topicData.dialogueIds)
+        yield return new WaitForSeconds(0.191f);
+        SendDialogue(topicData.dialogueIds[0]);
+
+        yield return new WaitForSeconds(0.716f);
+        for (int i = 1; i < topicData.dialogueIds.Count; i++)
         {
-            SendDialogue(dialogueId);
+            SendDialogue(topicData.dialogueIds[i]);
+            GameMgr.Instance.PlaySound("WordSFX");
             yield return new WaitForSeconds(0.6f);
         }
 
