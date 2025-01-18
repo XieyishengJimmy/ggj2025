@@ -18,12 +18,19 @@ public class DialogueEntity : MonoBehaviour, IPointerClickHandler
     {
         this.dialogueId = dialogueData.id;
 
+        LevelData level = LevelMgr.GetLevel(GameMgr.Instance.currentLevelId);
+
         // 确保DialogueContentEntity已实例化
         if (dialogueContent == null)
         {
             GameObject contentObj;
             if (dialogueData.isSelf)
             {
+                if (!string.IsNullOrEmpty(level.selfAvatar))
+                {
+                    avatar.sprite = Resources.Load<Sprite>("Arts/" + level.selfAvatar);
+                }
+
                 if (dialogueData.content.Length <= 5)
                 {
                     contentObj = Instantiate(Resources.Load<GameObject>("Prefabs/RightDialogueS"), dialogueContainer);
@@ -39,6 +46,11 @@ public class DialogueEntity : MonoBehaviour, IPointerClickHandler
             }
             else
             {
+                if (!string.IsNullOrEmpty(level.otherAvatar))
+                {
+                    avatar.sprite = Resources.Load<Sprite>("Arts/" + level.otherAvatar);
+                }
+
                 if (dialogueData.content.Length <= 5)
                 {
                     contentObj = Instantiate(Resources.Load<GameObject>("Prefabs/LeftDialogueS"), dialogueContainer);
@@ -51,6 +63,11 @@ public class DialogueEntity : MonoBehaviour, IPointerClickHandler
                 {
                     contentObj = Instantiate(Resources.Load<GameObject>("Prefabs/LeftDialogueL"), dialogueContainer);
                 }
+            }
+
+            if (string.IsNullOrEmpty(level.otherAvatar) && string.IsNullOrEmpty(level.selfAvatar))
+            {
+                avatar.sprite = Resources.Load<Sprite>("Arts/me");
             }
 
             dialogueContent = contentObj.GetComponent<DialogueContentEntity>();
@@ -115,7 +132,10 @@ public class DialogueEntity : MonoBehaviour, IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            ChatMgr.Instance.DeleteDialogue(dialogueId);
+            if (ChatMgr.Instance.enableButton)
+            {
+                ChatMgr.Instance.DeleteDialogue(dialogueId);
+            }
         }
     }
 }

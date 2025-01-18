@@ -8,8 +8,9 @@ public class ChatMgr : MonoBehaviour
 {
     public static ChatMgr Instance;
 
+    public Image avatar;
     public Button screenshotBtn;
-
+    public Text nicknameText;
     public ScrollRect messageSR;
     public RectTransform sendBg;
     public Button msgBarBtn;
@@ -25,6 +26,8 @@ public class ChatMgr : MonoBehaviour
     private int remainingDeleteCount;
 
     private bool isSendMsgShow = true;
+
+    public bool enableButton = true;
 
     void Awake()
     {
@@ -48,13 +51,24 @@ public class ChatMgr : MonoBehaviour
         // 初始化对话列表
         currentLevel = level;
         remainingDeleteCount = currentLevel.deleteCount;
+        nicknameText.text = currentLevel.otherName;
+        if (!string.IsNullOrEmpty(currentLevel.avatarPath))
+        {
+            avatar.sprite = Resources.Load<Sprite>("Arts/" + currentLevel.avatarPath);
+        }
+        else
+        {
+            avatar.sprite = Resources.Load<Sprite>("Arts/Body1");
+        }
 
         messageSR.content.ClearChildren();
         SendContent.ClearChildren();
 
         remainingDeleteCountText.text = "X" + remainingDeleteCount.ToString();
-        targetText.text = currentLevel.description;
+        targetText.text = "分享目标：\n\t\t" + currentLevel.description;
         InitTopics(currentLevel.topicIds);
+
+        ShowSendContent();
     }
 
     public void InitTopics(List<string> topicIds)
@@ -108,6 +122,7 @@ public class ChatMgr : MonoBehaviour
     // 禁用按钮
     public void DisableBtn()
     {
+        enableButton = false;
         msgBarBtn.interactable = false;
         screenshotBtn.interactable = false;
         restartBtn.interactable = false;
@@ -116,6 +131,7 @@ public class ChatMgr : MonoBehaviour
     // 启用按钮
     public void EnableBtn()
     {
+        enableButton = true;
         msgBarBtn.interactable = true;
         screenshotBtn.interactable = true;
         restartBtn.interactable = true;
@@ -158,6 +174,11 @@ public class ChatMgr : MonoBehaviour
 
     public void DeleteDialogue(string dialogueId)
     {
+        StartCoroutine(DeleteDialogueCoroutine(dialogueId));
+    }
+
+    public IEnumerator DeleteDialogueCoroutine(string dialogueId)
+    {
         if (remainingDeleteCount > 0)
         {
             remainingDeleteCount--;
@@ -166,12 +187,17 @@ public class ChatMgr : MonoBehaviour
                 DialogueEntity dialogue = child.GetComponent<DialogueEntity>();
                 if (dialogue.dialogueId == dialogueId)
                 {
+                    remainingDeleteCountText.text = "X" + remainingDeleteCount.ToString();
+
+                    DialogueContentEntity content = child.Find("DialogueContainer").GetComponentInChildren<DialogueContentEntity>();
+
+                    yield return content.PlayAnimationCoroutine();
+
                     child.SetParent(null);
                     Destroy(child.gameObject);
                     break;
                 }
             }
-            remainingDeleteCountText.text = "X" + remainingDeleteCount.ToString();
         }
     }
 
@@ -227,10 +253,12 @@ public class ChatMgr : MonoBehaviour
         if (isCorrect)
         {
             GameMgr.Instance.WinGame();
+            NextLevel();
         }
         else
         {
             GameMgr.Instance.LoseGame();
+            RestartLevel();
         }
     }
 
@@ -265,6 +293,34 @@ public class ChatMgr : MonoBehaviour
         }
         ScrollToBottom();
         isSendMsgShow = !isSendMsgShow;
+    }
+
+    public void ShowSendContent()
+    {
+        RectTransform msgRT = messageSR.GetComponent<RectTransform>();
+        RectTransform msgBarBtnRT = msgBarBtn.GetComponent<RectTransform>();
+        if (!isSendMsgShow)
+        {
+            sendBg.anchoredPosition = new Vector2(sendBg.anchoredPosition.x, sendBg.anchoredPosition.y + (sendBg.sizeDelta.y - msgBarBtnRT.sizeDelta.y));
+            msgRT.sizeDelta = new Vector2(msgRT.sizeDelta.x, msgRT.sizeDelta.y - (sendBg.sizeDelta.y - msgBarBtnRT.sizeDelta.y));
+            sendBg.GetComponent<Image>().color = new Color(1, 1, 1, 1f);
+            SendContent.gameObject.SetActive(true);
+            isSendMsgShow = true;
+        }
+    }
+
+    public void HideSendContent()
+    {
+        RectTransform msgRT = messageSR.GetComponent<RectTransform>();
+        RectTransform msgBarBtnRT = msgBarBtn.GetComponent<RectTransform>();
+        if (isSendMsgShow)
+        {
+            sendBg.anchoredPosition = new Vector2(sendBg.anchoredPosition.x, sendBg.anchoredPosition.y - (sendBg.sizeDelta.y - msgBarBtnRT.sizeDelta.y));
+            msgRT.sizeDelta = new Vector2(msgRT.sizeDelta.x, msgRT.sizeDelta.y + (sendBg.sizeDelta.y - msgBarBtnRT.sizeDelta.y));
+            sendBg.GetComponent<Image>().color = new Color(1, 1, 1, 0f);
+            SendContent.gameObject.SetActive(false);
+            isSendMsgShow = false;
+        }
     }
 
 }

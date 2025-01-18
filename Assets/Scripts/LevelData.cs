@@ -22,6 +22,8 @@ public class LevelData : ScriptableObject
     public string selfAvatar;
     [Tooltip("自己名字")]
     public string selfName;
+    [Tooltip("立绘路径")]
+    public string avatarPath;
     [Tooltip("删除次数")]
     public int deleteCount;
     [Tooltip("话题ID列表")]
