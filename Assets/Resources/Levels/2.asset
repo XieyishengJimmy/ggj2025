@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   levelName: "\u516B\u5A46"
-  description: "\u634F\u9020\u540C\u4E8B\u4E4B\u95F4\u7684\u6DF7\u4E71\u516B\u5366"
+  description: "\u634F\u9020\u300C\u300D\u540C\u4E8B\u4E4B\u95F4\u300D\u7684\u300C\u516B\u5366\u300D"
   otherAvatar: 222
   otherName: "\u540C\u4E8B\u5C0F\u5510"
   selfAvatar: me
