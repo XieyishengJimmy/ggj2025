@@ -2,16 +2,17 @@ using System.Collections.Generic;
 
 public static class LevelMgr
 {
-    public static Dictionary<string, LevelNode> levels = new Dictionary<string, LevelNode>();
-    public static Dictionary<string, TopicNode> topics = new Dictionary<string, TopicNode>();
-    public static Dictionary<string, DialogueNode> nodes = new Dictionary<string, DialogueNode>();
+    public static Dictionary<string, LevelData> levels = new Dictionary<string, LevelData>();
+    public static Dictionary<string, TopicData> topics = new Dictionary<string, TopicData>();
+    public static Dictionary<string, DialogueData> dialogues = new Dictionary<string, DialogueData>();
 
-    public static LevelNode GetLevel(string id)
+
+    public static LevelData GetLevel(int id)
     {
-        return levels.GetValueOrDefault(id);
+        return levels.GetValueOrDefault(id.ToString());
     }
 
-    public static void AddLevel(LevelNode level)
+    public static void AddLevel(LevelData level)
     {
         levels[level.id] = level;
     }
@@ -20,26 +21,28 @@ public static class LevelMgr
     {
         levels.Clear();
         topics.Clear();
-        nodes.Clear();
+        dialogues.Clear();
     }
 
-    public static DialogueNode GetNode(string id)
+    public static DialogueData GetDialogueData(string id)
     {
-        return nodes.GetValueOrDefault(id);
+        return dialogues.GetValueOrDefault(id);
     }
 
-    public static void AddNode(DialogueNode node)
+    public static void AddDialogueData(DialogueData dialogue)
     {
-        nodes[node.id] = node;
+        dialogues[dialogue.id] = dialogue;
     }
 
-    public static TopicNode GetTopic(string id)
+    public static TopicData GetTopic(string id)
     {
         return topics.GetValueOrDefault(id);
     }
 
-    public static void AddTopic(TopicNode topic)
+    public static void AddTopic(TopicData topic)
     {
         topics[topic.id] = topic;
     }
+
+
 }
