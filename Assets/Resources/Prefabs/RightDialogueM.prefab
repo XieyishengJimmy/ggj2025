@@ -91,6 +91,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueBG: {fileID: 2500141121448929471}
   dialogueText: {fileID: 4618149679053269577}
+  sprites:
+  - {fileID: 21300000, guid: c1c8a1e2fd9cad547982550346c66875, type: 3}
+  - {fileID: 21300000, guid: 939670f8898569d4f852e0e400d3b589, type: 3}
+  - {fileID: 21300000, guid: 322340ac4c570514da88105aa41993cc, type: 3}
+  - {fileID: 21300000, guid: e0d655c93a7ec01459d82e7a21df6a05, type: 3}
+  - {fileID: 21300000, guid: 1502794b8937b404c9a56d70cd466391, type: 3}
+  - {fileID: 21300000, guid: 332b0f71e793b6a44a167b574fbc274d, type: 3}
 --- !u!1 &6854251175981652417
 GameObject:
   m_ObjectHideFlags: 0

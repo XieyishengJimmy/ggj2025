@@ -1,4 +1,5 @@
 using System.Collections;
+using PrimeTween;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,7 @@ public class DialogueContentEntity : MonoBehaviour
     public Text dialogueText;
     public Sprite[] sprites;
 
-    private float frameRate = 0.1f;
+    private float frameRate = 0.082f;
     // private bool isLoop = false;
     private Image image;
 
@@ -25,7 +26,9 @@ public class DialogueContentEntity : MonoBehaviour
             //{
             for (int i = 0; i < sprites.Length - 1; i++)
             {
+                dialogueText.fontSize -= dialogueText.fontSize / 3;
                 image.sprite = sprites[i];
+                image.SetNativeSize();
                 yield return new WaitForSeconds(frameRate);
             }
 
