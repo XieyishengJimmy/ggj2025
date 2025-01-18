@@ -26,6 +26,8 @@ public class LevelData : ScriptableObject
     public int deleteCount;
     [Tooltip("话题ID列表")]
     public List<string> topicIds = new List<string>();
+    [Tooltip("初始对话列表")]
+    public List<string> initDialogueIds = new List<string>();
     [Tooltip("正确的对话顺序")]
     public List<string> correctOrder = new List<string>();
 }

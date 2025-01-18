@@ -8,7 +8,7 @@ public class GameMgr : MonoSingleton<GameMgr>
     public int currentLevelId;
 
     // 对话框最大宽度
-    public float dialogueMaxWidth = 500f;
+    public float dialogueMaxWidth = 360f;
 
     public void Initialize()
     {

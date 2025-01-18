@@ -26,8 +26,6 @@ public class ChatMgr : MonoBehaviour
 
     private bool isSendMsgShow = true;
 
-    private List<Rect> placedTopicRects = new List<Rect>(); // 记录已放置的主题位置
-
     void Awake()
     {
         if (!Utils.InitGame)
@@ -54,149 +52,48 @@ public class ChatMgr : MonoBehaviour
         messageSR.content.ClearChildren();
         SendContent.ClearChildren();
 
-        remainingDeleteCountText.text = remainingDeleteCount.ToString();
+        remainingDeleteCountText.text = "X" + remainingDeleteCount.ToString();
         targetText.text = currentLevel.description;
-        // InitTopics(currentLevel.topicIds);
-        InitTopicsR(currentLevel.topicIds);
+        InitTopics(currentLevel.topicIds);
     }
 
     public void InitTopics(List<string> topicIds)
     {
-        RectTransform contentRect = SendContent.GetComponent<RectTransform>();
-        placedTopicRects.Clear();
-
-        float minSpacing = 20f;
-        int maxAttempts = 50;
-
         foreach (var topicId in topicIds)
         {
             GameObject topicObj = Instantiate(TopicPrefab, SendContent);
-            RectTransform topicRect = topicObj.GetComponent<RectTransform>();
             topicObj.GetComponent<TopicEntity>().Init(LevelMgr.GetTopic(topicId));
-
-            // 获取内容区域和主题的矩形范围
-            Rect contentBounds = new Rect(-contentRect.rect.width / 2, -contentRect.rect.height / 2,
-                                        contentRect.rect.width, contentRect.rect.height);
-            Rect topicBounds = new Rect(0, 0, topicRect.rect.width, topicRect.rect.height);
-
-            Vector2 position = Vector2.zero;
-            bool validPosition = false;
-            int attempts = 0;
-
-            while (!validPosition && attempts < maxAttempts)
-            {
-                position = CalculateRandomPosition(contentBounds, topicBounds);
-                validPosition = true;
-
-                // 检查是否与已放置的主题重叠
-                foreach (var placedRect in placedTopicRects)
-                {
-                    if (IsRectOverlapping(
-                        position.x - topicBounds.width / 2,
-                        position.y - topicBounds.height / 2,
-                        topicBounds.width,
-                        topicBounds.height,
-                        placedRect.x,
-                        placedRect.y,
-                        placedRect.width,
-                        placedRect.height,
-                        minSpacing))
-                    {
-                        validPosition = false;
-                        break;
-                    }
-                }
-                attempts++;
-            }
-
-            // 如果找不到合适位置，调整到边缘位置
-            if (!validPosition)
-            {
-                position = new Vector2(
-                    contentBounds.x + topicBounds.width / 2 + placedTopicRects.Count * (minSpacing + topicBounds.width),
-                    contentBounds.y + topicBounds.height / 2
-                );
-            }
-
-            topicRect.localPosition = position;
-            placedTopicRects.Add(new Rect(
-                position.x - topicBounds.width / 2,
-                position.y - topicBounds.height / 2,
-                topicBounds.width,
-                topicBounds.height
-            ));
         }
-    }
 
-    public void InitTopicsR(List<string> topicIds)
-    {
-        RectTransform contentRect = SendContent.GetComponent<RectTransform>();
-        placedTopicRects.Clear();
-
-        // 计算圆的半径（取内容区域宽高的较小值的一半的80%作为半径）
-        float radius = Mathf.Min(contentRect.rect.width, contentRect.rect.height) * 0.4f;
-
-        // 获取主题预制件的尺寸
-        GameObject tempTopic = Instantiate(TopicPrefab, SendContent);
-        RectTransform tempRect = tempTopic.GetComponent<RectTransform>();
-        float topicWidth = tempRect.rect.width;
-        float topicHeight = tempRect.rect.height;
-        Destroy(tempTopic);
-
-        // 计算主题之间的角度间隔
-        float angleStep = 360f / topicIds.Count;
-
-        for (int i = 0; i < topicIds.Count; i++)
+        switch (topicIds.Count)
         {
-            GameObject topicObj = Instantiate(TopicPrefab, SendContent);
-            RectTransform topicRect = topicObj.GetComponent<RectTransform>();
-            topicObj.GetComponent<TopicEntity>().Init(LevelMgr.GetTopic(topicIds[i]));
-
-            // 计算当前主题的角度
-            float angle = i * angleStep;
-
-            // 将角度转换为弧度
-            float radian = angle * Mathf.Deg2Rad;
-
-            // 计算位置
-            float xPos = radius * Mathf.Cos(radian);
-            float yPos = radius * Mathf.Sin(radian);
-
-            topicRect.localPosition = new Vector2(xPos, yPos);
-
-            // 记录放置位置
-            placedTopicRects.Add(new Rect(
-                xPos - topicWidth / 2,
-                yPos - topicHeight / 2,
-                topicWidth,
-                topicHeight
-            ));
+            case 3:
+                SendContent.GetChild(0).GetComponent<RectTransform>().anchoredPosition = new Vector2(-142, 54);
+                SendContent.GetChild(1).GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -72);
+                SendContent.GetChild(2).GetComponent<RectTransform>().anchoredPosition = new Vector2(141, 23);
+                break;
+            case 4:
+                SendContent.GetChild(0).GetComponent<RectTransform>().anchoredPosition = new Vector2(-161, 54);
+                SendContent.GetChild(1).GetComponent<RectTransform>().anchoredPosition = new Vector2(-78, -72);
+                SendContent.GetChild(2).GetComponent<RectTransform>().anchoredPosition = new Vector2(58, 54);
+                SendContent.GetChild(3).GetComponent<RectTransform>().anchoredPosition = new Vector2(156, -72);
+                break;
+            case 5:
+                SendContent.GetChild(0).GetComponent<RectTransform>().anchoredPosition = new Vector2(-161, 54);
+                SendContent.GetChild(1).GetComponent<RectTransform>().anchoredPosition = new Vector2(-161, -73);
+                SendContent.GetChild(2).GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+                SendContent.GetChild(3).GetComponent<RectTransform>().anchoredPosition = new Vector2(156, 54);
+                SendContent.GetChild(4).GetComponent<RectTransform>().anchoredPosition = new Vector2(156, -73);
+                break;
+            case 6:
+                SendContent.GetChild(0).GetComponent<RectTransform>().anchoredPosition = new Vector2(-161, 54);
+                SendContent.GetChild(1).GetComponent<RectTransform>().anchoredPosition = new Vector2(-161, -62);
+                SendContent.GetChild(2).GetComponent<RectTransform>().anchoredPosition = new Vector2(-2, 72);
+                SendContent.GetChild(3).GetComponent<RectTransform>().anchoredPosition = new Vector2(-2, -45);
+                SendContent.GetChild(4).GetComponent<RectTransform>().anchoredPosition = new Vector2(156, 54);
+                SendContent.GetChild(5).GetComponent<RectTransform>().anchoredPosition = new Vector2(156, -62);
+                break;
         }
-    }
-
-    private bool IsRectOverlapping(float x1, float y1, float w1, float h1,
-                                 float x2, float y2, float w2, float h2,
-                                 float minSpacing)
-    {
-        return !(x1 + w1 + minSpacing < x2 ||
-                 x2 + w2 + minSpacing < x1 ||
-                 y1 + h1 + minSpacing < y2 ||
-                 y2 + h2 + minSpacing < y1);
-    }
-
-    public Vector2 CalculateRandomPosition(Rect contentRect, Rect topicRect)
-    {
-        // 留出边距
-        float margin = 20f;
-        float minX = contentRect.xMin + topicRect.width / 2 + margin;
-        float maxX = contentRect.xMax - topicRect.width / 2 - margin;
-        float minY = contentRect.yMin + topicRect.height / 2 + margin;
-        float maxY = contentRect.yMax - topicRect.height / 2 - margin;
-
-        float randomX = Random.Range(minX, maxX);
-        float randomY = Random.Range(minY, maxY);
-
-        return new Vector2(randomX, randomY);
     }
 
     /// <summary>
@@ -206,6 +103,22 @@ public class ChatMgr : MonoBehaviour
     {
         Canvas.ForceUpdateCanvases();
         messageSR.verticalNormalizedPosition = 0f;
+    }
+
+    // 禁用按钮
+    public void DisableBtn()
+    {
+        msgBarBtn.interactable = false;
+        screenshotBtn.interactable = false;
+        restartBtn.interactable = false;
+    }
+
+    // 启用按钮
+    public void EnableBtn()
+    {
+        msgBarBtn.interactable = true;
+        screenshotBtn.interactable = true;
+        restartBtn.interactable = true;
     }
 
     /// <summary>
@@ -232,11 +145,7 @@ public class ChatMgr : MonoBehaviour
     public IEnumerator SendTopic(string topicId)
     {
         TopicData topicData = LevelMgr.GetTopic(topicId);
-
-        foreach (Transform topicObj in SendContent)
-        {
-            topicObj.gameObject.SetActive(false);
-        }
+        DisableBtn();
 
         foreach (var dialogueId in topicData.dialogueIds)
         {
@@ -244,10 +153,7 @@ public class ChatMgr : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
 
-        foreach (Transform topicObj in SendContent)
-        {
-            topicObj.gameObject.SetActive(true);
-        }
+        EnableBtn();
     }
 
     public void DeleteDialogue(string dialogueId)
@@ -265,7 +171,7 @@ public class ChatMgr : MonoBehaviour
                     break;
                 }
             }
-            remainingDeleteCountText.text = remainingDeleteCount.ToString();
+            remainingDeleteCountText.text = "X" + remainingDeleteCount.ToString();
         }
     }
 
@@ -342,15 +248,20 @@ public class ChatMgr : MonoBehaviour
     public void OnMsgBarBtn()
     {
         RectTransform msgRT = messageSR.GetComponent<RectTransform>();
+        RectTransform msgBarBtnRT = msgBarBtn.GetComponent<RectTransform>();
         if (isSendMsgShow)
         {
-            sendBg.anchoredPosition = new Vector2(sendBg.anchoredPosition.x, sendBg.anchoredPosition.y - 392f);
-            msgRT.sizeDelta = new Vector2(msgRT.sizeDelta.x, msgRT.sizeDelta.y + 392f);
+            sendBg.anchoredPosition = new Vector2(sendBg.anchoredPosition.x, sendBg.anchoredPosition.y - (sendBg.sizeDelta.y - msgBarBtnRT.sizeDelta.y));
+            msgRT.sizeDelta = new Vector2(msgRT.sizeDelta.x, msgRT.sizeDelta.y + (sendBg.sizeDelta.y - msgBarBtnRT.sizeDelta.y));
+            sendBg.GetComponent<Image>().color = new Color(1, 1, 1, 0f);
+            SendContent.gameObject.SetActive(false);
         }
         else
         {
-            sendBg.anchoredPosition = new Vector2(sendBg.anchoredPosition.x, sendBg.anchoredPosition.y + 392f);
-            msgRT.sizeDelta = new Vector2(msgRT.sizeDelta.x, msgRT.sizeDelta.y - 392f);
+            sendBg.anchoredPosition = new Vector2(sendBg.anchoredPosition.x, sendBg.anchoredPosition.y + (sendBg.sizeDelta.y - msgBarBtnRT.sizeDelta.y));
+            msgRT.sizeDelta = new Vector2(msgRT.sizeDelta.x, msgRT.sizeDelta.y - (sendBg.sizeDelta.y - msgBarBtnRT.sizeDelta.y));
+            sendBg.GetComponent<Image>().color = new Color(1, 1, 1, 1f);
+            SendContent.gameObject.SetActive(true);
         }
         ScrollToBottom();
         isSendMsgShow = !isSendMsgShow;
