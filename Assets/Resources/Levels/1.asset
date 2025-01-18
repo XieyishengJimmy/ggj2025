@@ -20,7 +20,7 @@ MonoBehaviour:
   selfAvatar: me
   selfName: Me
   avatarPath: Body1
-  deleteCount: 4
+  deleteCount: 3
   topicIds:
   - 10001
   - 10002
