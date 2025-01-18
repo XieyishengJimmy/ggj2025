@@ -9,10 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9e2134763be41c489dec380d8d681c5, type: 3}
-  m_Name: 1000203
+  m_Script: {fileID: 11500000, guid: 1e9574beb6f3e9d4498c19c7f6f05f72, type: 3}
+  m_Name: 30003
   m_EditorClassIdentifier: 
-  id: 1000203
-  isSelf: 0
-  content: 
-  image: transfer1
+  id: 30003
+  content: "\u804A\u804A\u65E5\u5E38"
+  dialogueIds:
+  - 3000301
+  - 3000302
+  - 3000303
+  - 3000304

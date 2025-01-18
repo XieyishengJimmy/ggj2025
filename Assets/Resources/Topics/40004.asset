@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e9574beb6f3e9d4498c19c7f6f05f72, type: 3}
-  m_Name: 10002
+  m_Name: 40004
   m_EditorClassIdentifier: 
-  id: 10002
-  content: "\u8BA8\u8981\u6B20\u6B3E"
+  id: 40004
+  content: "\u660E\u5E74\u8FD8\u770B\u5417"
   dialogueIds:
-  - 1000201
-  - 1000202
-  - 1000203
-  - 1000204
+  - 4000401
+  - 4000402
+  - 4000403
+  - 4000404
+  - 4000405

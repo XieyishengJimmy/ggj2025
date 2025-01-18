@@ -10,22 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6bc10215a9d97ff4c8930982ac222e56, type: 3}
-  m_Name: 1
+  m_Name: 2
   m_EditorClassIdentifier: 
-  id: 1
-  levelName: "\u7ED9\u7ED9\u7684"
-  description: "\u5F3A\u884C\u5E2E\u5144\u5F1F\u300C\u51FA\u8F68\u300D"
-  otherAvatar: 111
-  otherName: "\u5DE6\u5DE6\u5B50"
+  id: 2
+  levelName: "\u516B\u5A46"
+  description: "\u634F\u9020\u540C\u4E8B\u4E4B\u95F4\u7684\u6DF7\u4E71\u516B\u5366"
+  otherAvatar: 222
+  otherName: "\u540C\u4E8B\u5C0F\u5510"
   selfAvatar: me
   selfName: Me
-  deleteCount: 4
+  deleteCount: 9
   topicIds:
-  - 10001
-  - 10002
-  - 10003
-  - 10004
+  - 20001
+  - 20002
+  - 20003
+  - 20004
   initDialogueIds: []
   correctOrder:
-  - 1000301
-  - 1000102
+  - 2000102
+  - 2000303
+  - 2000403
