@@ -296,21 +296,22 @@ public class ChatMgr : MonoBehaviour
             dialogueIds.Add(dialogue.dialogueId);
         }
 
-        // 首先检查长度是否相同
-        if (dialogueIds.Count != currentLevel.correctOrder.Count)
+        // 首先检查长度是足够
+        if (dialogueIds.Count < currentLevel.correctOrder.Count)
         {
 #if UNITY_EDITOR
-            Debug.Log("对话顺序错误: 长度不相同");
+            Debug.Log("对话数量不足");
 #endif
             GameMgr.Instance.LoseGame();
             return;
         }
 
-        // 逐个比较元素
+        // 从后往前比较元素
         bool isCorrect = true;
-        for (int i = 0; i < dialogueIds.Count; i++)
+        int correctLen = currentLevel.correctOrder.Count;
+        for (int i = 0; i < correctLen; i++)
         {
-            if (dialogueIds[i] != currentLevel.correctOrder[i])
+            if (dialogueIds[dialogueIds.Count - 1 - i] != currentLevel.correctOrder[correctLen - 1 - i])
             {
                 isCorrect = false;
                 break;
