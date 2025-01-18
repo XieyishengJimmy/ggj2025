@@ -7,6 +7,9 @@ public class GameMgr : MonoSingleton<GameMgr>
     // 当前关卡ID
     public int currentLevelId;
 
+    // 对话框最大宽度
+    public float dialogueMaxWidth = 500f;
+
     public void Initialize()
     {
         // 清空现有数据
@@ -16,19 +19,7 @@ public class GameMgr : MonoSingleton<GameMgr>
         LevelData[] allLevels = Resources.LoadAll<LevelData>("Levels");
         foreach (var level in allLevels)
         {
-            var levelData = new LevelData
-            {
-                id = level.id,
-                levelName = level.levelName,
-                description = level.description,
-                otherAvatar = level.otherAvatar,
-                otherName = level.otherName,
-                selfAvatar = level.selfAvatar,
-                selfName = level.selfName,
-                deleteCount = level.deleteCount,
-                topicIds = level.topicIds,
-                correctOrder = level.correctOrder
-            };
+            var levelData = ScriptableObject.Instantiate(level);
             LevelMgr.AddLevel(levelData);
         }
 
@@ -36,12 +27,7 @@ public class GameMgr : MonoSingleton<GameMgr>
         TopicData[] allTopics = Resources.LoadAll<TopicData>("Topics");
         foreach (var topic in allTopics)
         {
-            var topicData = new TopicData
-            {
-                id = topic.id,
-                content = topic.content,
-                dialogueIds = topic.dialogueIds
-            };
+            var topicData = ScriptableObject.Instantiate(topic);
             LevelMgr.AddTopic(topicData);
         }
 
@@ -49,15 +35,11 @@ public class GameMgr : MonoSingleton<GameMgr>
         DialogueData[] allDialogues = Resources.LoadAll<DialogueData>("Dialogues");
         foreach (var dialogue in allDialogues)
         {
-            var dialogueData = new DialogueData
-            {
-                id = dialogue.id,
-                isSelf = dialogue.isSelf,
-                content = dialogue.content,
-                image = dialogue.image
-            };
+            var dialogueData = ScriptableObject.Instantiate(dialogue);
             LevelMgr.AddDialogueData(dialogueData);
         }
+
+        currentLevelId = 1;
     }
 
     public void WinGame()

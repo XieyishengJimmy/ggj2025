@@ -2,6 +2,8 @@ using UnityEngine;
 
 public static class Utils
 {
+    public static bool InitGame = false;
+
     /// <summary>
     /// 清空Transform下的所有子物体
     /// </summary>
