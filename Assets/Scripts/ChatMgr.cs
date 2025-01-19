@@ -83,7 +83,12 @@ public class ChatMgr : MonoBehaviour
     /// </summary>
     public void InitAvatarResource()
     {
-
+        for (int i = 0; i < 4; i++)
+        {
+            string n = "Body" + i + "_Normal";
+            var res = Resources.LoadAll<Sprite>("Arts/" + n);
+            avatarResource[n] = res;
+        }
     }
 
     /// <summary>
