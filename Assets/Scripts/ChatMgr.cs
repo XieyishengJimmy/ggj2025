@@ -34,6 +34,7 @@ public class ChatMgr : MonoBehaviour
     private Dictionary<string, Sprite[]> avatarResource = new Dictionary<string, Sprite[]>();
     private Coroutine initDialogueCoroutine;
     private Coroutine avatarCoroutine;
+    private List<string> deletedDialogueIds = new List<string>();
 
     void Awake()
     {
@@ -73,6 +74,8 @@ public class ChatMgr : MonoBehaviour
 
         messageSR.content.ClearChildren();
         SendContent.ClearChildren();
+
+        deletedDialogueIds.Clear();
 
         remainingDeleteCountText.text = "X" + remainingDeleteCount.ToString();
         targetText.text = "分享目标：\n\n" + currentLevel.description;
@@ -312,6 +315,15 @@ public class ChatMgr : MonoBehaviour
 
     public IEnumerator DeleteDialogueCoroutine(string dialogueId)
     {
+        if (deletedDialogueIds.Contains(dialogueId))
+        {
+            yield break;
+        }
+        else
+        {
+            deletedDialogueIds.Add(dialogueId);
+        }
+
         if (remainingDeleteCount > 0)
         {
             remainingDeleteCount--;
