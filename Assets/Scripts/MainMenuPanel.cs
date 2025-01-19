@@ -22,7 +22,14 @@ public class MainMenuPanel : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Show();
+            if (self.activeSelf)
+            {
+                Hide();
+            }
+            else
+            {
+                Show();
+            }
         }
     }
 
@@ -31,9 +38,14 @@ public class MainMenuPanel : MonoBehaviour
         self.SetActive(true);
     }
 
-    public void OnBackInGame()
+    public void Hide()
     {
         self.SetActive(false);
+    }
+
+    public void OnBackInGame()
+    {
+        Hide();
     }
 
     public void OnBackStartScene()

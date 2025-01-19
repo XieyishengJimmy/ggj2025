@@ -9,7 +9,7 @@ public class ChatMgr : MonoBehaviour
     public static ChatMgr Instance;
 
     public Image avatar;
-    public Button screenshotBtn;
+
     public Text nicknameText;
     public ScrollRect messageSR;
     public RectTransform sendBg;
@@ -19,18 +19,20 @@ public class ChatMgr : MonoBehaviour
     public GameObject OtherDialoguePrefab;
     public GameObject SelfDialoguePrefab;
 
+    public Button screenshotBtn;
     public Image shareResults;
     public Text remainingDeleteCountText;
     public Button nextLevelBtn;
     public Button restartBtn;
     public Text targetText;
 
+    public bool enableButton = true;
+
     private LevelData currentLevel;
     private int remainingDeleteCount;
-
     private bool isSendMsgShow = true;
-
-    public bool enableButton = true;
+    private Dictionary<string, Sprite[]> avatarResource = new Dictionary<string, Sprite[]>();
+    private Coroutine avatarCoroutine;
 
     void Awake()
     {
@@ -47,9 +49,13 @@ public class ChatMgr : MonoBehaviour
 
     void Start()
     {
+        InitAvatarResource();
         StartLevel(GameMgr.Instance.currentLevelId);
     }
 
+    /// <summary>
+    /// 初始化聊天界面
+    /// </summary>
     public void InitChat(LevelData level)
     {
         // 初始化对话列表
@@ -60,25 +66,70 @@ public class ChatMgr : MonoBehaviour
         shareResults.gameObject.SetActive(false);
         nextLevelBtn.gameObject.SetActive(false);
 
-        if (!string.IsNullOrEmpty(currentLevel.avatarPath))
-        {
-            avatar.sprite = Resources.Load<Sprite>("Arts/" + currentLevel.avatarPath);
-        }
-        else
-        {
-            avatar.sprite = Resources.Load<Sprite>("Arts/Body1");
-        }
+        LoadAvatar(currentLevel.avatarPath);
 
         messageSR.content.ClearChildren();
         SendContent.ClearChildren();
 
         remainingDeleteCountText.text = "X" + remainingDeleteCount.ToString();
-        targetText.text = "分享目标：\n\t\t" + currentLevel.description;
+        targetText.text = "分享目标：\n\n" + currentLevel.description;
         InitTopics(currentLevel.topicIds);
 
         ShowSendContent();
     }
 
+    /// <summary>
+    /// 初始化头像帧动画资源
+    /// </summary>
+    public void InitAvatarResource()
+    {
+
+    }
+
+    /// <summary>
+    /// 加载头像
+    /// </summary>
+    public void LoadAvatar(string avatarPath, string avatarState = "Normal")
+    {
+        if (!string.IsNullOrEmpty(avatarPath))
+        {
+            avatar.sprite = Resources.Load<Sprite>("Arts/" + avatarPath + "_" + avatarState);
+        }
+        else
+        {
+            avatar.sprite = Resources.Load<Sprite>("Arts/Body1_Normal");
+        }
+        avatar.SetNativeSize();
+        if (avatarCoroutine != null)
+        {
+            StopCoroutine(avatarCoroutine);
+        }
+        avatarCoroutine = StartCoroutine(ChatCharacterAvatarAnimation(avatarPath + "_" + avatarState));
+    }
+
+    /// <summary>
+    /// 聊天角色头像动画
+    /// </summary>
+    public IEnumerator ChatCharacterAvatarAnimation(string avatarPath)
+    {
+        if (avatarResource.ContainsKey(avatarPath) && avatarResource[avatarPath].Length > 1)
+        {
+            while (true)
+            {
+                for (int i = 0; i < avatarResource[avatarPath].Length; i++)
+                {
+                    avatar.sprite = avatarResource[avatarPath][i];
+                    avatar.SetNativeSize();
+                    yield return new WaitForSeconds(0.082f);
+                }
+            }
+        }
+        yield return null;
+    }
+
+    /// <summary>
+    /// 初始化话题
+    /// </summary>
     public void InitTopics(List<string> topicIds)
     {
         foreach (var topicId in topicIds)
@@ -117,6 +168,7 @@ public class ChatMgr : MonoBehaviour
                 break;
         }
     }
+
 
     /// <summary>
     /// 滑动条置底
@@ -281,6 +333,7 @@ public class ChatMgr : MonoBehaviour
 
         if (isCorrect)
         {
+            LoadAvatar(currentLevel.avatarPath, "Angry");
             Sprite successSprite = Resources.Load<Sprite>("Images/ShareSuccess");
             shareResults.sprite = successSprite;
             shareResults.SetNativeSize();

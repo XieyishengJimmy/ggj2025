@@ -1000,7 +1000,7 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -1423,7 +1423,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   avatar: {fileID: 1198031840}
-  screenshotBtn: {fileID: 1533735538}
   nicknameText: {fileID: 1329362824}
   messageSR: {fileID: 1504056670}
   sendBg: {fileID: 240008459}
@@ -1432,6 +1431,7 @@ MonoBehaviour:
   TopicPrefab: {fileID: 6344875230173315191, guid: 7b691789fcc16b847920fdbd0c96dfda, type: 3}
   OtherDialoguePrefab: {fileID: 1538517872978798947, guid: 5afffed38d62abc4f9cd06929c811dd5, type: 3}
   SelfDialoguePrefab: {fileID: 828526904158529651, guid: a077447dc549ac34d878a06ebc00bf16, type: 3}
+  screenshotBtn: {fileID: 1533735538}
   shareResults: {fileID: 871605415}
   remainingDeleteCountText: {fileID: 1525819145}
   nextLevelBtn: {fileID: 1270665760}
@@ -1741,7 +1741,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: -616, y: 0}
-  m_SizeDelta: {x: 782, y: 993}
+  m_SizeDelta: {x: 782, y: 1147}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1198031840
 MonoBehaviour:
@@ -1763,7 +1763,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1c6894d228f73ad4089b8e2fc54fc687, type: 3}
+  m_Sprite: {fileID: 21300000, guid: dd374e687d9eaa74f820d9d053c40e63, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

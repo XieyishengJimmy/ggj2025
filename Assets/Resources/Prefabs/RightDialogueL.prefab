@@ -98,7 +98,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1f6de1f2be6cec746af35ddb9ae31167, type: 3}
   - {fileID: 21300000, guid: 3de434399905e534db6c0b2b5479c0c0, type: 3}
   - {fileID: 21300000, guid: ccab8ebe52150344fb4fedc1919b6088, type: 3}
-  bubbleSound: {fileID: 0}
 --- !u!1 &6854251175981652417
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,8 +132,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -8, y: 0}
-  m_SizeDelta: {x: 264, y: 64}
+  m_AnchoredPosition: {x: -6, y: 0}
+  m_SizeDelta: {x: 268, y: 68}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8641934852796073976
 CanvasRenderer:
@@ -166,8 +165,8 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 54b44295b25dff448b5a29913aa26ab9, type: 3}
-    m_FontSize: 24
-    m_FontStyle: 0
+    m_FontSize: 26
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
@@ -177,4 +176,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u5185\u5BB9\u5185\u5BB9\u5185\u5BB9\u5185\u5BB9\u5185\u5BB9\u5BB9"
+  m_Text: "\u5185\u5BB9\u5185\u5BB9\u5185\u5BB9\u5185\u5BB9\u5185\u5BB9\u5BB9\u5185\u5BB9\u5BB9\u5185\u5BB9\u5BB9\u5185\u5BB9\u5BB9"

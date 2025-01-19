@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class GuideUI : MonoBehaviour,IPointerDownHandler
+public class GuideUI : MonoBehaviour, IPointerDownHandler
 {
     public void OpenGuideUI()
     {
