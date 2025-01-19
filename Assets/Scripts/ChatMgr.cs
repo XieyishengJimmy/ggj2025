@@ -32,6 +32,7 @@ public class ChatMgr : MonoBehaviour
     private int remainingDeleteCount;
     private bool isSendMsgShow = true;
     private Dictionary<string, Sprite[]> avatarResource = new Dictionary<string, Sprite[]>();
+    private Coroutine initDialogueCoroutine;
     private Coroutine avatarCoroutine;
 
     void Awake()
@@ -49,8 +50,9 @@ public class ChatMgr : MonoBehaviour
 
     void Start()
     {
-        InitAvatarResource();
+        // InitAvatarResource();
         StartLevel(GameMgr.Instance.currentLevelId);
+        // StartLevel(2);
     }
 
     /// <summary>
@@ -76,6 +78,12 @@ public class ChatMgr : MonoBehaviour
         InitTopics(currentLevel.topicIds);
 
         ShowSendContent();
+
+        if (initDialogueCoroutine != null)
+        {
+            StopCoroutine(initDialogueCoroutine);
+        }
+        initDialogueCoroutine = StartCoroutine(InitDialogue());
     }
 
     /// <summary>
@@ -83,12 +91,29 @@ public class ChatMgr : MonoBehaviour
     /// </summary>
     public void InitAvatarResource()
     {
-        for (int i = 0; i < 4; i++)
-        {
-            string n = "Body" + i + "_Normal";
-            var res = Resources.LoadAll<Sprite>("Arts/" + n);
-            avatarResource[n] = res;
-        }
+        string n = "Body3_Normal";
+        var res = Resources.LoadAll<Sprite>("Arts/Body3/Normal");
+        avatarResource[n] = res;
+
+        n = "Body3_Angry";
+        res = Resources.LoadAll<Sprite>("Arts/Body3/Angry");
+        avatarResource[n] = res;
+
+        n = "Body4_Normal";
+        res = Resources.LoadAll<Sprite>("Arts/Body4/Normal");
+        avatarResource[n] = res;
+
+        n = "Body4_Angry";
+        res = Resources.LoadAll<Sprite>("Arts/Body4/Angry");
+        avatarResource[n] = res;
+
+        n = "Body6_Normal";
+        res = Resources.LoadAll<Sprite>("Arts/Body6/Normal");
+        avatarResource[n] = res;
+
+        n = "Body6_Angry";
+        res = Resources.LoadAll<Sprite>("Arts/Body6/Angry");
+        avatarResource[n] = res;
     }
 
     /// <summary>
@@ -221,6 +246,30 @@ public class ChatMgr : MonoBehaviour
     }
 
     /// <summary>
+    /// 初始化对话内容
+    /// </summary>
+    public IEnumerator InitDialogue()
+    {
+        if (currentLevel.initDialogueIds.Count == 0)
+        {
+            yield break;
+        }
+
+        GameMgr.Instance.PlaySound("TopicSFX");
+
+        yield return new WaitForSeconds(0.191f);
+        SendDialogue(currentLevel.initDialogueIds[0]);
+
+        yield return new WaitForSeconds(0.716f);
+        for (int i = 1; i < currentLevel.initDialogueIds.Count; i++)
+        {
+            SendDialogue(currentLevel.initDialogueIds[i]);
+            GameMgr.Instance.PlaySound("WordSFX");
+            yield return new WaitForSeconds(0.6f);
+        }
+    }
+
+    /// <summary>
     /// 发送话题
     /// </summary>
     public IEnumerator SendTopic(string topicId)
@@ -282,7 +331,7 @@ public class ChatMgr : MonoBehaviour
     {
         GameMgr.Instance.PlaySound("ButtonSFX");
         int next = int.Parse(currentLevel.id) + 1;
-        if (next >= LevelMgr.levels.Count)
+        if (next > LevelMgr.levels.Count)
         {
             return;
         }
