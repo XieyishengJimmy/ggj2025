@@ -99,6 +99,7 @@ public class ChatMgr : MonoBehaviour
         res = Resources.LoadAll<Sprite>("Arts/Body3/Angry");
         avatarResource[n] = res;
 
+        /*
         n = "Body4_Normal";
         res = Resources.LoadAll<Sprite>("Arts/Body4/Normal");
         avatarResource[n] = res;
@@ -106,14 +107,8 @@ public class ChatMgr : MonoBehaviour
         n = "Body4_Angry";
         res = Resources.LoadAll<Sprite>("Arts/Body4/Angry");
         avatarResource[n] = res;
+        */
 
-        n = "Body6_Normal";
-        res = Resources.LoadAll<Sprite>("Arts/Body6/Normal");
-        avatarResource[n] = res;
-
-        n = "Body6_Angry";
-        res = Resources.LoadAll<Sprite>("Arts/Body6/Angry");
-        avatarResource[n] = res;
     }
 
     /// <summary>
@@ -130,11 +125,15 @@ public class ChatMgr : MonoBehaviour
             avatar.sprite = Resources.Load<Sprite>("Arts/Body1_Normal");
         }
         avatar.SetNativeSize();
-        if (avatarCoroutine != null)
-        {
-            StopCoroutine(avatarCoroutine);
-        }
-        avatarCoroutine = StartCoroutine(ChatCharacterAvatarAnimation(avatarPath + "_" + avatarState));
+        //if (avatarCoroutine != null)
+        //{
+        //     StopCoroutine(avatarCoroutine);
+        //}
+        //if (avatarPath == "Body6")
+        //{
+        //    avatarPath = "Body3";
+        //}
+        // avatarCoroutine = StartCoroutine(ChatCharacterAvatarAnimation(avatarPath + "_" + avatarState));
     }
 
     /// <summary>
