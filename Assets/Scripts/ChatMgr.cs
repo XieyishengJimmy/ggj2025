@@ -50,7 +50,7 @@ public class ChatMgr : MonoBehaviour
 
     void Start()
     {
-        // InitAvatarResource();
+        InitAvatarResource();
         StartLevel(GameMgr.Instance.currentLevelId);
         // StartLevel(2);
     }
@@ -61,6 +61,7 @@ public class ChatMgr : MonoBehaviour
     public void InitChat(LevelData level)
     {
         // 初始化对话列表
+        GameMgr.Instance.currentLevelId = int.Parse(level.id);
         currentLevel = level;
         remainingDeleteCount = currentLevel.deleteCount;
         nicknameText.text = currentLevel.otherName;
@@ -122,18 +123,18 @@ public class ChatMgr : MonoBehaviour
         }
         else
         {
-            avatar.sprite = Resources.Load<Sprite>("Arts/Body1_Normal");
+            avatar.sprite = Resources.Load<Sprite>("Arts/Body3_Normal");
         }
         avatar.SetNativeSize();
-        //if (avatarCoroutine != null)
-        //{
-        //     StopCoroutine(avatarCoroutine);
-        //}
-        //if (avatarPath == "Body6")
-        //{
-        //    avatarPath = "Body3";
-        //}
-        // avatarCoroutine = StartCoroutine(ChatCharacterAvatarAnimation(avatarPath + "_" + avatarState));
+        if (avatarCoroutine != null)
+        {
+            StopCoroutine(avatarCoroutine);
+        }
+        if (avatarPath == "Body6")
+        {
+            avatarPath = "Body3";
+        }
+        avatarCoroutine = StartCoroutine(ChatCharacterAvatarAnimation(avatarPath + "_" + avatarState));
     }
 
     /// <summary>
@@ -237,7 +238,9 @@ public class ChatMgr : MonoBehaviour
 
     public void SendDialogue(string dialogueId)
     {
+        Debug.Log("SendDialogue: " + dialogueId);
         DialogueData dialogueData = LevelMgr.GetDialogueData(dialogueId);
+        Debug.Log("dialogueData: " + dialogueData);
         GameObject dialogueObj = Instantiate(dialogueData.isSelf ? SelfDialoguePrefab : OtherDialoguePrefab, messageSR.content);
         dialogueObj.GetComponent<DialogueEntity>().Init(dialogueData);
 
@@ -256,6 +259,9 @@ public class ChatMgr : MonoBehaviour
 
         GameMgr.Instance.PlaySound("TopicSFX");
 
+        HideSendContent();
+        DisableBtn();
+
         yield return new WaitForSeconds(0.191f);
         SendDialogue(currentLevel.initDialogueIds[0]);
 
@@ -266,6 +272,9 @@ public class ChatMgr : MonoBehaviour
             GameMgr.Instance.PlaySound("WordSFX");
             yield return new WaitForSeconds(0.6f);
         }
+
+        EnableBtn();
+        ShowSendContent();
     }
 
     /// <summary>
@@ -276,17 +285,21 @@ public class ChatMgr : MonoBehaviour
         GameMgr.Instance.PlaySound("TopicSFX");
 
         TopicData topicData = LevelMgr.GetTopic(topicId);
+
         DisableBtn();
 
         yield return new WaitForSeconds(0.191f);
         SendDialogue(topicData.dialogueIds[0]);
 
         yield return new WaitForSeconds(0.716f);
-        for (int i = 1; i < topicData.dialogueIds.Count; i++)
+        if (topicData.dialogueIds.Count > 1)
         {
-            SendDialogue(topicData.dialogueIds[i]);
-            GameMgr.Instance.PlaySound("WordSFX");
-            yield return new WaitForSeconds(0.6f);
+            for (int i = 1; i < topicData.dialogueIds.Count; i++)
+            {
+                SendDialogue(topicData.dialogueIds[i]);
+                GameMgr.Instance.PlaySound("WordSFX");
+                yield return new WaitForSeconds(0.6f);
+            }
         }
 
         EnableBtn();

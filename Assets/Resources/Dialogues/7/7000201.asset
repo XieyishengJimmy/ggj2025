@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9e2134763be41c489dec380d8d681c5, type: 3}
   m_Name: 7000201
   m_EditorClassIdentifier: 
-  id: '7000201 '
+  id: 7000201
   isSelf: 1
   content: "\u73B0\u5728\u7F8E\u56FD\u6700\u5927\u7684\u8BDD\u9898\u662F\u4EC0\u4E48\r"
   image: 

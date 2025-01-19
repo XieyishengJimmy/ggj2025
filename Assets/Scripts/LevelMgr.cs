@@ -27,7 +27,7 @@ public static class LevelMgr
 
     public static DialogueData GetDialogueData(string id)
     {
-        return dialogues.GetValueOrDefault(id);
+        return dialogues.GetValueOrDefault(id.Trim());
     }
 
     public static void AddDialogueData(DialogueData dialogue)
@@ -37,7 +37,7 @@ public static class LevelMgr
 
     public static TopicData GetTopic(string id)
     {
-        return topics.GetValueOrDefault(id);
+        return topics.GetValueOrDefault(id.Trim());
     }
 
     public static void AddTopic(TopicData topic)
