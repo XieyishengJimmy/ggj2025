@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a9e2134763be41c489dec380d8d681c5, type: 3}
-  m_Name: 4000303
+  m_Name: 5000002
   m_EditorClassIdentifier: 
-  id: 4000303
-  isSelf: 0
-  content: "\u559C\u6B22\u5C0F\u5C9B\u79C0\u592B"
+  id: 5000002
+  isSelf: 1
+  content: "\u53EF\u4EE5\u63A5\u53D7\u4E00\u4E0B\u8D5B\u524D\u91C7\u8BBF\u5417\r"
   image: 
