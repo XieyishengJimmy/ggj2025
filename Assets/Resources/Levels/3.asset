@@ -15,11 +15,11 @@ MonoBehaviour:
   id: 3
   levelName: "\u8FFD\u661F"
   description: "\u5C06\u5BF9\u65B9\u5851\u9020\u6210\u300C\u79CD\u65CF\u6B67\u89C6\u300D\u7684\u574F\u4EBA"
-  otherAvatar: Head6
+  otherAvatar: Head3
   otherName: "\u8FFD\u661F\u5C0F\u5B8B"
   selfAvatar: me
   selfName: Me
-  avatarPath: Body6
+  avatarPath: Body3
   deleteCount: 10
   topicIds:
   - 60001

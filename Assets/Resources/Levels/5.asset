@@ -15,11 +15,11 @@ MonoBehaviour:
   id: 5
   levelName: TGA
   description: "\u63D0\u5347\u300C\u539F\u795E\u300D\u7684\u300C\u56FD\u9645\u5F71\u54CD\u529B\u300D"
-  otherAvatar: Head4
+  otherAvatar: Head5
   otherName: "\u9B42\u5C0F\u5C06"
   selfAvatar: me
   selfName: Me
-  avatarPath: Body4
+  avatarPath: Body5
   deleteCount: 11
   topicIds:
   - 40001
