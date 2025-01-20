@@ -52,7 +52,7 @@ public class ChatMgr : MonoBehaviour
 
     void Start()
     {
-        InitAvatarResource();
+        // InitAvatarResource();
         StartLevel(GameMgr.Instance.currentLevelId);
         // StartLevel(2);
         guideUIPanel.OpenGuideUI();
@@ -131,6 +131,8 @@ public class ChatMgr : MonoBehaviour
             avatar.sprite = Resources.Load<Sprite>("Arts/Body3_Normal");
         }
         avatar.SetNativeSize();
+        
+        /*
         if (avatarCoroutine != null)
         {
             StopCoroutine(avatarCoroutine);
@@ -140,6 +142,7 @@ public class ChatMgr : MonoBehaviour
             avatarPath = "Body3";
         }
         avatarCoroutine = StartCoroutine(ChatCharacterAvatarAnimation(avatarPath + "_" + avatarState));
+        */
     }
 
     /// <summary>

@@ -18,6 +18,7 @@ public class StartGame : MonoBehaviour
     private Vector2 menuAndLogoStartPos;
     private Vector2 makeListPanelStartPos;
 
+    /*
     void Awake()
     {
         int height = Screen.currentResolution.height;
@@ -39,6 +40,7 @@ public class StartGame : MonoBehaviour
             Screen.SetResolution(1600, 900, false);
         }
     }
+    */
 
 
     // Start is called before the first frame update
