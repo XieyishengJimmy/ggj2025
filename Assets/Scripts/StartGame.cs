@@ -20,9 +20,23 @@ public class StartGame : MonoBehaviour
 
     void Awake()
     {
-        if (Screen.currentResolution.height < 1440)
+        int height = Screen.currentResolution.height;
+
+        if (height >= 2160) // 4K
         {
-            Screen.SetResolution(1920, 1080, false);
+            Screen.SetResolution(3200, 1800, false);
+        }
+        else if (height >= 1800) // 3K
+        {
+            Screen.SetResolution(2560, 1440, false);
+        }
+        else if (height >= 1440) // 2K
+        {
+            Screen.SetResolution(2048, 1152, false);
+        }
+        else // 1080p
+        {
+            Screen.SetResolution(1600, 900, false);
         }
     }
 

@@ -19,6 +19,7 @@ public class ChatMgr : MonoBehaviour
     public GameObject OtherDialoguePrefab;
     public GameObject SelfDialoguePrefab;
 
+    public GuideUI guideUIPanel;
     public Button screenshotBtn;
     public Image shareResults;
     public Text remainingDeleteCountText;
@@ -54,6 +55,7 @@ public class ChatMgr : MonoBehaviour
         InitAvatarResource();
         StartLevel(GameMgr.Instance.currentLevelId);
         // StartLevel(2);
+        guideUIPanel.OpenGuideUI();
     }
 
     /// <summary>
