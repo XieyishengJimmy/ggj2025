@@ -134,8 +134,12 @@ public class DialogueEntity : MonoBehaviour, IPointerClickHandler, IPointerDownH
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        touchStartTime = Time.time;
-        isTouching = true;
+        // 只响应左键
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            touchStartTime = Time.time;
+            isTouching = true;
+        }
     }
 
     public void OnPointerUp(PointerEventData eventData)
