@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class DialogueEntity : MonoBehaviour, IPointerClickHandler
+public class DialogueEntity : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
 {
     public Image avatar;
     public Transform dialogueContainer;
@@ -13,6 +13,10 @@ public class DialogueEntity : MonoBehaviour, IPointerClickHandler
 
     [HideInInspector]
     public string dialogueId;
+
+    private float touchStartTime;
+    private bool isTouching;
+    private const float LONG_PRESS_DURATION = 0.5f; // 长按触发时间阈值
 
     public void Init(DialogueData dialogueData)
     {
@@ -128,14 +132,38 @@ public class DialogueEntity : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        touchStartTime = Time.time;
+        isTouching = true;
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (isTouching)
+        {
+            isTouching = false;
+            float pressDuration = Time.time - touchStartTime;
+            if (pressDuration >= LONG_PRESS_DURATION)
+            {
+                TryDeleteDialogue();
+            }
+        }
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            if (ChatMgr.Instance.enableButton)
-            {
-                ChatMgr.Instance.DeleteDialogue(dialogueId);
-            }
+            TryDeleteDialogue();
+        }
+    }
+
+    private void TryDeleteDialogue()
+    {
+        if (ChatMgr.Instance.enableButton)
+        {
+            ChatMgr.Instance.DeleteDialogue(dialogueId);
         }
     }
 }

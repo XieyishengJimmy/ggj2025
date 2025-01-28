@@ -131,7 +131,7 @@ public class ChatMgr : MonoBehaviour
             avatar.sprite = Resources.Load<Sprite>("Arts/Body3_Normal");
         }
         avatar.SetNativeSize();
-        
+
         /*
         if (avatarCoroutine != null)
         {
