@@ -15,3 +15,8 @@ public class TopicData : ScriptableObject
     [Tooltip("对话ID列表")]
     public List<string> dialogueIds = new List<string>();
 }
+
+public class NewNum
+{
+
+}
